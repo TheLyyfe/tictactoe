@@ -32,6 +32,7 @@ let condWin = [
 ]
 
 let win = () => `Le joueur ${player} a gagné`
+let lose = () => `Le CPU a gagné`
 let draw = () => "Egalité"
 let tour = () => `C'est au tour du joueur ${player}`
 
@@ -42,7 +43,7 @@ document.querySelector("#replay").addEventListener("click", replay)
 
 function clickCell() {
     if (jeuActif) {
-        let = indexCell = parseInt(this.dataset.index)
+        let indexCell = parseInt(this.dataset.index)
         if (board[indexCell] != "" || !board) {
             return
         }
@@ -62,6 +63,7 @@ function clickCell() {
 
 function uWin() {
     let pWin = false
+    let oWin = false
     for (let uWin of condWin) {
         let val1 = board[uWin[0]]
         let val2 = board[uWin[1]]
@@ -69,17 +71,23 @@ function uWin() {
         if (val1 === "" || val2 === "" || val3 === "") {
             continue
         }
-        if (val1 == val2 && val1 == val3) {
+        if (val1 == "X" && val1 == val2 && val1 == val3) {
+            console.log("ghg");
             pWin = true
+            statut.innerHTML = win()
             jeuActif = false
             break
         }
+        if (val1 == "O" && val1 == val2 && val1 == val3) {
+            console.log("prout");
+            oWin = true
+            statut.innerHTML = lose()
+            jeuActif = false
+            
+            break
+        }
     }
-    if (pWin) {
-        statut.innerHTML = win()
-        jeuActif = false
-        return
-    }
+  
 
     if (!board.includes("")) {
         statut.innerHTML = draw()
@@ -87,7 +95,9 @@ function uWin() {
         return
     }
     player = player === "X" ? "O" : "X"
-    statut.innerHTML = tour()
+    if (jeuActif == true) {
+        statut.innerHTML = tour()
+    }
 }
 
 function replay() {
@@ -106,7 +116,9 @@ function playCPU() {
         if ( document.querySelectorAll(".cell")[random].innerHTML != "") {
             random = randomNumber(0,8)
         }else{
+            let cellIndex = parseInt(document.querySelectorAll(".cell")[random].dataset.index) 
             document.querySelectorAll(".cell")[random].innerHTML = "O"
+            board[cellIndex] = "O"
             break
         }
     }
